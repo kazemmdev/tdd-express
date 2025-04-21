@@ -1,11 +1,7 @@
-const { findByUsername, create } = require('../models/userModel');
-const {
-  hashPassword,
-  generateToken,
-  comparePassword,
-} = require('../utils/auth');
+import { create, findByUsername } from '../models/userModel';
+import { comparePassword, generateToken, hashPassword } from '../utils/auth';
 
-exports.register = async (req, res) => {
+export const register = async (req: any, res: any) => {
   const { username, password } = req.body;
   if (!username || !password) {
     return res.status(400).json({ error: 'Username or Password is required' });
@@ -22,7 +18,7 @@ exports.register = async (req, res) => {
   return res.status(201).json({ token });
 };
 
-exports.login = async (req, res) => {
+export const login = async (req: any, res: any) => {
   const { username, password } = req.body;
   if (!username || !password) {
     return res.status(400).json({ error: 'Username or Password is required' });
