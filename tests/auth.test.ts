@@ -25,6 +25,13 @@ describe('Auth endpoints', () => {
       expect(res.statusCode).toEqual(409);
       expect(res.body).toHaveProperty('error');
     });
+
+    it('should not allow required data on registration', async () => {
+      const res = await request(app).post('/register').send({});
+
+      expect(res.statusCode).toEqual(400);
+      expect(res.body).toHaveProperty('error');
+    });
   });
 
   describe('Post /login', () => {
@@ -45,11 +52,24 @@ describe('Auth endpoints', () => {
     });
 
     it('should not allow invalid credentials', async () => {
-      const res = await request(app)
+      const res1 = await request(app)
         .post('/login')
         .send({ username: 'invalid', password: 'invalid' });
 
-      expect(res.statusCode).toEqual(401);
+      expect(res1.statusCode).toEqual(401);
+
+      const res2 = await request(app)
+        .post('/login')
+        .send({ username: 'loginUser', password: 'invalid' });
+
+      expect(res2.statusCode).toEqual(401);
+    });
+
+    it('should not allow required data on login', async () => {
+      const res = await request(app).post('/login').send({});
+
+      expect(res.statusCode).toEqual(400);
+      expect(res.body).toHaveProperty('error');
     });
   });
 });
